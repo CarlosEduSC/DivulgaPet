@@ -8,33 +8,39 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
-    private ListView listaPets;
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+    private PopupMenu menu;
+    private ImageView imgMenu;
     private Spinner spTipo;
     private Spinner spRaca;
     private Spinner spFaixaEtaria;
     private Spinner spSexo;
+    private ListView listaPets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listaPets = findViewById(R.id.lsPets);
+        imgMenu = findViewById(R.id.imgMenu);
         spTipo = findViewById(R.id.spTipo);
         spRaca = findViewById(R.id.spRaca);
         spFaixaEtaria = findViewById(R.id.spFaixaEtaria);
         spSexo = findViewById(R.id.spSexo);
+        listaPets = findViewById(R.id.lsPets);
 
         Pet bolaDeNeve = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
 
@@ -42,12 +48,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         pets.add(bolaDeNeve);
 
+        menu.setOnMenuItemClickListener(this);
+        imgMenu.setOnClickListener(this);
         PetsAdapter petsAdapter = new PetsAdapter(this, pets);
         listaPets.setAdapter(petsAdapter);
 
         listaPets.setOnItemClickListener(this);
 
         opcoesSpinners();
+    }
+
+    private void OpenMenu(View view) {
+        menu = new PopupMenu(this, view);
+        MenuInflater inflater = menu.getMenuInflater();
+
+        inflater.inflate(R.menu.menu_options, menu.getMenu());
+
+        menu.show();
     }
 
     private void opcoesSpinners() {
@@ -81,5 +98,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent = new Intent(MainActivity.this, DetalharActivity.class);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == imgMenu) {
+            OpenMenu(view);
+        }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.perfil) {
+            Intent intent = new Intent(MainActivity.this, PerfilActivity.class);
+
+            startActivity(intent);
+
+        } else if (menuItem.getItemId() == R.id.cadastrarPet) {
+            Intent intent = new Intent(MainActivity.this, CadastroPetAcitivity.class);
+
+            startActivity(intent);
+
+        } else if (menuItem.getItemId() == R.id.listaAnimais) {
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+
+            startActivity(intent);
+        }
+        return false;
     }
 }

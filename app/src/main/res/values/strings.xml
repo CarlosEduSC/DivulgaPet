@@ -31,6 +31,8 @@
     <string name="editarperfil">EDITAR PERFIL</string>
     <string name="animaisadocao">Animais para adoção</string>
     <string name="listainteressados">LISTA DE INTERESSADOS</string>
+    <string name="login">Fazer Login</string>
+    <string name="cadastrarse">Fazer cadastro</string>
     <array name="tipo">
         <item>Tipo</item>
         <item>Cachorro</item>
