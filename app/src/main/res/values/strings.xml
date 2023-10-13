@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">Exercicio 1</string>
+    <string name="email">Email:</string>
+    <string name="cpf">CPF:</string>
+    <string name="telefone">Telefone:</string>
+    <string name="cidade">Cidade</string>
+    <string name="estado">Estado</string>
+    <string name="limpar">LIMPAR</string>
+    <string name="confirmar">CONFIRMAR</string>
+    <string name="divulgaPet">Divulga Pet</string>
+    <string name="perfil">Perfil</string>
+    <string name="cadastrarPet">Cadastrar Pet</string>
+    <string name="listaAnimais">Lista de Animais</string>
+    <string name="nome">Nome:</string>
+    <string name="tipo">Tipo:</string>
+    <string name="raca">Raça:</string>
+    <string name="faixa">Faixa etária:</string>
+    <string name="sexo">Sexo:</string>
+    <string name="descricao">Descrição</string>
+    <string name="vacinas">Vacinas:</string>
+    <string name="castracao">Castrado(a):</string>
+    <string name="tenhoInteresse">TENHO INTERESSE</string>
+    <string name="dataNascimento">Data de Nascimento:</string>
+    <string name="cadastroUsuario">Cadastro de Usuário</string>
+    <string name="data">dd/mm/aa</string>
+    <string name="senha">Senha:</string>
+    <string name="confirmarsenha">Confirmar Senha:</string>
+    <string name="cadastrar">CADASTRAR-SE</string>
+    <string name="entrar">ENTRAR</string>
+    <string name="cep">Cep:</string>
+    <string name="editarperfil">EDITAR PERFIL</string>
+    <string name="animaisadocao">Animais para adoção</string>
+    <string name="listainteressados">LISTA DE INTERESSADOS</string>
+    <array name="tipo">
+        <item>Tipo</item>
+        <item>Cachorro</item>
+        <item>Gato</item>
+    </array>
+
+    <array name="raca_cachorro">
+        <item>Raça</item>
+        <item>Vira-lata</item>
+        <item>Poodle</item>
+        <item>Lhasa Apso</item>
+        <item>Pug</item>
+        <item>Pitbull</item>
+        <item>Outro</item>
+    </array>
+
+    <array name="raca_gato">
+        <item>Raça</item>
+        <item>Vira-lata</item>
+        <item>Persa</item>
+        <item>Siamês</item>
+        <item>Angorá</item>
+        <item>Maine Coon</item>
+        <item>Outro</item>
+    </array>
+
+    <array name="faixa_etaria">
+        <item>Faixa Etária</item>
+        <item>0 há 5 meses</item>
+        <item>6 há 11 meses</item>
+        <item>1 há 2 anos</item>
+        <item>3 há 5 anos</item>
+        <item>6 há 10 anos</item>
+        <item>mais de 10 anos</item>
+    </array>
+
+    <array name="sexo">
+        <item>Sexo</item>
+        <item>Macho</item>
+        <item>Fêmea</item>
+    </array>
+</resources>
