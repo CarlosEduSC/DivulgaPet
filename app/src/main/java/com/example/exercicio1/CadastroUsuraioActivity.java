@@ -9,11 +9,10 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import java.util.Calendar;
 
-public class CadatroUsuraioActivity extends AppCompatActivity implements View.OnClickListener {
+public class CadastroUsuraioActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView txtData;
     private Button btCadastro;
@@ -54,7 +53,7 @@ public class CadatroUsuraioActivity extends AppCompatActivity implements View.On
             showDatePickerDialog();
 
         } else if (view == btCadastro) {
-            Intent intent = new Intent(CadatroUsuraioActivity.this, LoginActivity.class);
+            Intent intent = new Intent(CadastroUsuraioActivity.this, LoginActivity.class);
 
             startActivity(intent);
         }

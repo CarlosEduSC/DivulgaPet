@@ -5,4 +5,31 @@
     android:layout_height="match_parent"
     tools:context=".CadastroPetAcitivity">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="5dp"
+        android:gravity="center_vertical"
+        android:background="@color/fundo"
+        tools:context=".ToolBar">
+
+        <ImageView
+            android:id="@+id/imgVoltar"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/arrow" />
+
+        <ImageView
+            android:id="@+id/imgMenu"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_menu"
+            android:layout_marginStart="265dp"/>
+
+    </LinearLayout>
+
 </LinearLayout>

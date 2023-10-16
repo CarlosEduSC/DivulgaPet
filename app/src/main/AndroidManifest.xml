@@ -22,10 +22,11 @@
         </activity>
 
         <activity android:name=".DetalharActivity" />
-        <activity android:name=".CadatroUsuraioActivity" />
+        <activity android:name=".CadastroUsuraioActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".PerfilActivity" />
         <activity android:name=".PerfilDoadorActivity" />
+        <activity android:name=".CadastroPetAcitivity" />
     </application>
 
 </manifest>

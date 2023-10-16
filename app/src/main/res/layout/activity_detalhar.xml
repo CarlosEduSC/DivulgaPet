@@ -7,11 +7,34 @@
     android:orientation="vertical"
     tools:context=".DetalharActivity">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <include layout="@layout/tool_bar" />
-    </RelativeLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="5dp"
+        android:gravity="center_vertical"
+        android:background="@color/fundo"
+        tools:context=".ToolBar">
+
+        <ImageView
+            android:id="@+id/imgVoltar"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:src="@drawable/arrow" />
+
+        <ImageView
+            android:id="@+id/imgMenu"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_menu"
+            android:layout_marginStart="265dp"/>
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,14 +45,27 @@
         android:src="@drawable/maltes"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="30dp"
-        android:layout_gravity="bottom">
+        android:paddingTop="10dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imgPet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/maltes" />
+        <TextView
+            android:id="@+id/txtDescricao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/filtro_background"
+            android:padding="10dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/descricao"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+        <ImageView
+            android:id="@+id/imgPet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/maltes" />
 
     </LinearLayout>
 

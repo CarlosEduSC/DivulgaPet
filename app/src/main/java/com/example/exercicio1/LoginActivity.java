@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(intent);
 
         } else if (view == btCadastrar) {
-            Intent intent = new Intent(LoginActivity.this, CadatroUsuraioActivity.class);
+            Intent intent = new Intent(LoginActivity.this, CadastroUsuraioActivity.class);
 
             startActivity(intent);
 

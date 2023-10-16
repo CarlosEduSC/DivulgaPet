@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         List<Pet> pets = new ArrayList<Pet>();
 
         pets.add(bolaDeNeve);
-
-        menu.setOnMenuItemClickListener(this);
         imgMenu.setOnClickListener(this);
         PetsAdapter petsAdapter = new PetsAdapter(this, pets);
         listaPets.setAdapter(petsAdapter);
@@ -63,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         MenuInflater inflater = menu.getMenuInflater();
 
         inflater.inflate(R.menu.menu_options, menu.getMenu());
+
+        menu.setOnMenuItemClickListener(this);
 
         menu.show();
     }
