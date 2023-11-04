@@ -1,14 +1,8 @@
 package com.example.exercicio1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +14,9 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 
+import com.google.firebase.ktx.Firebase;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String[] opcoes_raca_gato;
     private String[] opcoes_faixa_etaria;
     private String[] opcoes_sexo;
+    private PetDAO petDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,31 +53,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         opcoes_faixa_etaria = getResources().getStringArray(R.array.faixa_etaria);
         opcoes_sexo = getResources().getStringArray(R.array.sexo);
 
-        Pet bolaDeNeve = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve1 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve2 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve3 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve4 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve5 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve6 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve7 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve8 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve9 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Pet bolaDeNeve10 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
+        petDAO = new PetDAO();
+
+        Pet pet1 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
+
+        petDAO.addPet(pet1, this);
 
         List<Pet> pets = new ArrayList<Pet>();
+        pets.add(pet1);
 
-        pets.add(bolaDeNeve);
-        pets.add(bolaDeNeve1);
-        pets.add(bolaDeNeve2);
-        pets.add(bolaDeNeve3);
-        pets.add(bolaDeNeve4);
-        pets.add(bolaDeNeve5);
-        pets.add(bolaDeNeve6);
-        pets.add(bolaDeNeve7);
-        pets.add(bolaDeNeve8);
-        pets.add(bolaDeNeve9);
-        pets.add(bolaDeNeve10);
         imgMenu.setOnClickListener(this);
         PetsAdapter petsAdapter = new PetsAdapter(this, pets);
         listaPets.setAdapter(petsAdapter);

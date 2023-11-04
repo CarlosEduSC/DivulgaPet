@@ -76,6 +76,7 @@ public class Pet {
         Grande
     }
 
+    private String id;
     private String nome;
     private String tipo;
     private String faixaEtaria;
@@ -95,6 +96,13 @@ public class Pet {
         this.faixaEtaria = faixaEtaria;
         this.raca = raca;
         this.sexo = sexo;
+
+    }
+
+    public String getId() {return id;}
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNome() {
