@@ -46,6 +46,8 @@
     <string name="obs">Obs: Colocar outras vacinas na descrição.</string>
     <string name="descricaoCadastro">Descrição:</string>
     <string name="adicionarFoto">ADICIONAR FOTO</string>
+    <string name="nomePet">Nome do Pet:</string>
+    <string name="editarpet">EDITAR PET</string>
     <array name="tipo">
         <item>Tipo</item>
         <item>Cachorro</item>
