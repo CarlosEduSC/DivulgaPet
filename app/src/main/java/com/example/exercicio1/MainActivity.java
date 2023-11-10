@@ -14,9 +14,6 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 
-import com.google.firebase.ktx.Firebase;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         Pet pet1 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
 
-        petDAO.addPet(pet1, this);
+//        petDAO.addPet(pet1, this);
 
         List<Pet> pets = new ArrayList<Pet>();
         pets.add(pet1);
@@ -146,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             startActivity(intent);
 
         } else if (menuItem.getItemId() == R.id.cadastrarPet) {
-            Intent intent = new Intent(MainActivity.this, CadastroPetAcitivity.class);
+            Intent intent = new Intent(MainActivity.this, CadastroPetActivity.class);
 
             startActivity(intent);
 

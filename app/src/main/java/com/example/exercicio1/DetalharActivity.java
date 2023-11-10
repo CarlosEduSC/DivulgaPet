@@ -1,6 +1,5 @@
 package com.example.exercicio1;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -10,14 +9,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class DetalharActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private ImageView imgVoltar;
@@ -116,7 +112,7 @@ public class DetalharActivity extends AppCompatActivity implements View.OnClickL
             startActivity(intent);
 
         } else if (menuItem.getItemId() == R.id.cadastrarPet) {
-            Intent intent = new Intent(DetalharActivity.this, CadastroPetAcitivity.class);
+            Intent intent = new Intent(DetalharActivity.this, CadastroPetActivity.class);
 
             startActivity(intent);
 

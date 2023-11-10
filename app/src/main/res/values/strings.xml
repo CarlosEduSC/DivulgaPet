@@ -3,8 +3,8 @@
     <string name="email">Email:</string>
     <string name="cpf">CPF:</string>
     <string name="telefone">Telefone:</string>
-    <string name="cidade">Cidade</string>
-    <string name="estado">Estado</string>
+    <string name="cidade">Cidade:</string>
+    <string name="estado">Estado:</string>
     <string name="limpar">LIMPAR</string>
     <string name="confirmar">CONFIRMAR</string>
     <string name="divulgaPet">Divulga Pet</string>
@@ -33,6 +33,19 @@
     <string name="listainteressados">LISTA DE INTERESSADOS</string>
     <string name="login">Fazer Login</string>
     <string name="cadastrarse">Fazer cadastro</string>
+    <string name="rua">Rua:</string>
+    <string name="numero">Número:</string>
+    <string name="bairro">Bairro:</string>
+    <string name="atualizar">ATUALIZAR PERFIL</string>
+    <string name="cachorro">Cachorro</string>
+    <string name="gato">Gato</string>
+    <string name="macho">Macho</string>
+    <string name="femea">Fêmea</string>
+    <string name="raivaCanina">Raiva Canina</string>
+    <string name="leishmaniose">Leishmaniose</string>
+    <string name="obs">Obs: Colocar outras vacinas na descrição.</string>
+    <string name="descricaoCadastro">Descrição:</string>
+    <string name="adicionarFoto">ADICIONAR FOTO</string>
     <array name="tipo">
         <item>Tipo</item>
         <item>Cachorro</item>
