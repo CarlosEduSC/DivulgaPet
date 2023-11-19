@@ -98,7 +98,7 @@
             </RadioGroup>
 
             <Spinner
-                android:id="@+id/spFaixaEtaria"
+                android:id="@+id/spRaca"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -144,7 +144,7 @@
             </RadioGroup>
 
             <Spinner
-                android:id="@+id/spRaca"
+                android:id="@+id/spFaixaEtaria"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -2,8 +2,11 @@ package com.example.exercicio1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +16,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener, AdapterView.OnItemSelectedListener {
     private PopupMenu menu;
@@ -31,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String[] opcoes_faixa_etaria;
     private String[] opcoes_sexo;
     private PetDAO petDAO;
+    private PetsAdapter petsAdapter;
+    private List<Pet> petsLista = new ArrayList<Pet>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +60,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         petDAO = new PetDAO();
 
-        Pet pet1 = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-
-//        petDAO.addPet(pet1, this);
-
-        List<Pet> pets = new ArrayList<Pet>();
-        pets.add(pet1);
-
         imgMenu.setOnClickListener(this);
-        PetsAdapter petsAdapter = new PetsAdapter(this, pets);
-        listaPets.setAdapter(petsAdapter);
 
+        petsAdapter = new PetsAdapter(this, petsLista);
+        listaPets.setAdapter(petsAdapter);
         listaPets.setOnItemClickListener(this);
+        petDAO.getAllPets(this, new PetDAO.PetCallback() {
+            @Override
+            public void onCallback(List<Pet> pets) {
+                if (pets != null) {
+                    petsLista.clear();
+                    petsLista.addAll(pets);
+                    petsAdapter.notifyDataSetChanged();
+                } else {
+                    Log.e("MainActivity", "Erro ao obter a lista de pets");
+                    Toast.makeText(MainActivity.this, "Erro ao obter a lista de pets", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         Spinners();
 
@@ -99,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         menu = new PopupMenu(this, view);
         MenuInflater inflater = menu.getMenuInflater();
 
-        inflater.inflate(R.menu.menu_options, menu.getMenu());
+        inflater.inflate(R.menu.menu_main, menu.getMenu());
 
         menu.setOnMenuItemClickListener(this);
 
@@ -108,23 +122,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if (view == listaPets) {
+        if (adapterView == listaPets) {
+            Pet petSelecionado = (Pet) petsAdapter.getItem(i);
+
+            String petId = petSelecionado.getId();
+
             Intent intent = new Intent(MainActivity.this, DetalharActivity.class);
+            intent.putExtra("petId", petId);
 
             startActivity(intent);
 
-        } else if (view == spTipo) {
-            if (spTipo.getSelectedItem() == opcoes_tipo[1]) {
-                ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcoes_raca_cachorro);
-                adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spRaca.setAdapter(adapterRaca);
-
-            } else if (spTipo.getSelectedItem() == opcoes_tipo[2]) {
-                ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcoes_raca_gato);
-                adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spRaca.setAdapter(adapterRaca);
-
-            }
         }
     }
 
@@ -137,20 +144,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.perfil) {
-            Intent intent = new Intent(MainActivity.this, PerfilActivity.class);
+        if (menuItem.getItemId() == R.id.login) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 
             startActivity(intent);
 
-        } else if (menuItem.getItemId() == R.id.cadastrarPet) {
-            Intent intent = new Intent(MainActivity.this, CadastroPetActivity.class);
+        } else if (menuItem.getItemId() == R.id.cadastro) {
+            Intent intent = new Intent(MainActivity.this, CadastroUsuraioActivity.class);
 
             startActivity(intent);
 
-        } else if (menuItem.getItemId() == R.id.listaAnimais) {
-            Intent intent = new Intent(MainActivity.this, MainActivity.class);
-
-            startActivity(intent);
         }
         return false;
     }
@@ -158,30 +161,95 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         int id = adapterView.getId();
+        String tipo = "";
+        String raca = "";
+        String faixaEtaria = "";
+        String sexo = "";
 
-        if (id ==R.id.spTipo) {
-            if (spTipo.getSelectedItem() == opcoes_tipo[1]) {
-                ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcoes_raca_cachorro);
+        if (id == R.id.spTipo) {
+            if (spTipo.getSelectedItem() != opcoes_tipo[0]) {
+                if (spTipo.getSelectedItem() == opcoes_tipo[1]) {
+                    ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcoes_raca_cachorro);
+                    adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spRaca.setAdapter(adapterRaca);
+
+                } else if (spTipo.getSelectedItem() == opcoes_tipo[2]) {
+                    ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcoes_raca_gato);
+                    adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spRaca.setAdapter(adapterRaca);
+                }
+
+                tipo = spTipo.getSelectedItem().toString();
+                atualizarLista(tipo, raca, faixaEtaria, sexo);
+            } else {
+                ArrayList<String> raca0 = new ArrayList<String>();
+                raca0.add("Raça");
+                raca0.add("Selecione o tipo do animal primeiro!");
+
+                ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, raca0);
                 adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spRaca.setAdapter(adapterRaca);
+                atualizarLista(tipo, raca, faixaEtaria, sexo);
+            }
+
+        } else if (id == R.id.spRaca) {
+            if (spTipo.getSelectedItem() == opcoes_tipo[1]) {
+                if (spRaca.getSelectedItem() != opcoes_raca_cachorro[0]) {
+                    raca = spRaca.getSelectedItem().toString();
+                    atualizarLista(tipo, raca, faixaEtaria, sexo);
+                } else {
+                    atualizarLista(tipo, raca, faixaEtaria, sexo);
+                }
 
             } else if (spTipo.getSelectedItem() == opcoes_tipo[2]) {
-                ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcoes_raca_gato);
-                adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spRaca.setAdapter(adapterRaca);
+                if (spRaca.getSelectedItem() != opcoes_raca_gato[0]) {
+                    raca = spRaca.getSelectedItem().toString();
+                    atualizarLista(tipo, raca, faixaEtaria, sexo);
+                }  else {
+                    atualizarLista(tipo, raca, faixaEtaria, sexo);
+                }
 
             }
 
-        } else if (id ==R.id.spRaca) {
+        } else if (id == R.id.spFaixaEtaria) {
+            if (spFaixaEtaria.getSelectedItem() != opcoes_faixa_etaria[0]) {
+                faixaEtaria = spFaixaEtaria.getSelectedItem().toString();
+                atualizarLista(tipo, raca, faixaEtaria, sexo);
+            } else {
+                atualizarLista(tipo, raca, faixaEtaria, sexo);
+            }
 
-        } else if (id ==R.id.spFaixaEtaria) {
-
-        } else if (id ==R.id.spSexo) {
-
+        } else if (id == R.id.spSexo) {
+            if (spSexo.getSelectedItem() != opcoes_sexo[0]) {
+                sexo = spSexo.getSelectedItem().toString();
+                atualizarLista(tipo, raca, faixaEtaria, sexo);
+            } else {
+                atualizarLista(tipo, raca, faixaEtaria, sexo);
+            }
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+    }
+
+    public void atualizarLista(String tipo, String raca, String faixaEtaria, String sexo) {
+            List<Pet> novaLista = new ArrayList<Pet>();
+
+            for (Pet pet : petsLista) {
+                boolean tipoCorresponde = tipo == null || tipo.isEmpty() || tipo.equals(pet.getTipo());
+                boolean racaCorresponde = raca == null || raca.isEmpty() || raca.equals(pet.getRaca());
+                boolean faixaEtariaCorresponde = faixaEtaria == null || faixaEtaria.isEmpty() || faixaEtaria.equals(pet.getFaixaEtaria());
+                boolean sexoCorresponde = sexo == null || sexo.isEmpty() || sexo.equals(pet.getSexo());
+
+                if (tipoCorresponde && racaCorresponde && faixaEtariaCorresponde && sexoCorresponde) {
+                    novaLista.add(pet);
+                }
+            }
+
+        petsLista.clear();
+        petsLista.addAll(novaLista);
+
+        petsAdapter.notifyDataSetChanged();
     }
 }

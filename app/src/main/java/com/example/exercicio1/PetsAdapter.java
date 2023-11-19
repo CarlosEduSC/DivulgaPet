@@ -46,13 +46,14 @@ public class PetsAdapter extends BaseAdapter {
         TextView faixaEtaria = (TextView) v.findViewById(R.id.txtFaixaEtaria);
         TextView sexo = (TextView) v.findViewById(R.id.txtSexo);
 
-        img.setImageResource(R.drawable.maltes);
-        nome.setText(pets.get(i).getNome());
-        tipo.setText(pets.get(i).getTipo());
-        raca.setText(pets.get(i).getRaca());
-        faixaEtaria.setText(pets.get(i).getFaixaEtaria());
-        sexo.setText(pets.get(i).getSexo());
+        Pet currentPet = pets.get(i);
+        nome.setText(currentPet.getNome());
+        tipo.setText(currentPet.getTipo());
+        raca.setText(currentPet.getRaca());
+        faixaEtaria.setText(currentPet.getFaixaEtaria());
+        sexo.setText(currentPet.getSexo());
 
         return v;
+
     }
 }

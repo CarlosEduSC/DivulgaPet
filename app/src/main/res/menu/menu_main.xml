@@ -9,14 +9,8 @@
         app:showAsAction="always|withText"/>
 
     <item
-        android:id="@+id/cadastrarPet"
+        android:id="@+id/cadastro"
         android:title="@string/cadastrarse"
         android:icon="@android:drawable/ic_menu_add"
-        app:showAsAction="always|withText"/>
-
-    <item
-        android:id="@+id/listaAnimais"
-        android:title="@string/listaAnimais"
-        android:icon="@drawable/icon_lista"
         app:showAsAction="always|withText"/>
 </menu>

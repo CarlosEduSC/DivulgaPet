@@ -10,7 +10,7 @@
     <string name="divulgaPet">Divulga Pet</string>
     <string name="perfil">Perfil</string>
     <string name="cadastrarPet">Cadastrar Pet</string>
-    <string name="listaAnimais">Lista de Animais</string>
+    <string name="listaAnimais">Lista de Pets Disponiveis</string>
     <string name="nome">Nome:</string>
     <string name="tipo">Tipo:</string>
     <string name="raca">Raça:</string>

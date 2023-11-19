@@ -1,6 +1,7 @@
 package com.example.exercicio1;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Pet {
     public enum Tipo{
@@ -96,7 +97,6 @@ public class Pet {
         this.faixaEtaria = faixaEtaria;
         this.raca = raca;
         this.sexo = sexo;
-
     }
 
     public String getId() {return id;}
@@ -146,7 +146,11 @@ public class Pet {
     }
 
     public String getPorte() {
-        return porte;
+        if (porte == null) {
+            return "Não informado";
+        } else {
+            return porte;
+        }
     }
 
     public void setPorte(String porte) {
@@ -154,7 +158,11 @@ public class Pet {
     }
 
     public String getCatracao() {
-        return catracao;
+        if (catracao == null) {
+            return "Não informado";
+        } else {
+            return catracao;
+        }
     }
 
     public void setCatracao(String catracao) {
@@ -162,7 +170,13 @@ public class Pet {
     }
 
     public ArrayList<String> getVacinas() {
-        return vacinas;
+        if (vacinas == null) {
+            ArrayList<String> resposta = new ArrayList<String>();
+            resposta.add("Não informadas");
+            return resposta;
+        } else {
+            return vacinas;
+        }
     }
 
     public void setVacinas(ArrayList<String> vacinas) {
@@ -170,7 +184,11 @@ public class Pet {
     }
 
     public String getDescricao() {
-        return descricao;
+        if (descricao == null || descricao == "") {
+            return "Não informada";
+        } else {
+            return descricao;
+        }
     }
 
     public void setDescricao(String descricao) {
