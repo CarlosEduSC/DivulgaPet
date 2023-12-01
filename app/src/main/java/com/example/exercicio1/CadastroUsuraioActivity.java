@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class CadastroUsuraioActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private ImageView imgVoltar;
@@ -29,6 +31,8 @@ public class CadastroUsuraioActivity extends AppCompatActivity implements View.O
     private EditText edtSenha;
     private EditText edtConfirmarSenha;
     private Button btCadastro;
+    private  UsuarioDAO usuarioDAO = new UsuarioDAO();
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,14 +100,20 @@ public class CadastroUsuraioActivity extends AppCompatActivity implements View.O
                 if (edtSenha.getText().toString().equals(edtConfirmarSenha.getText().toString())) {
                     Usuario usuario = new Usuario(edtNome.getText().toString(), txtData.getText().toString(), edtTelefone.getText().toString(), edtEmail.getText().toString(), edtSenha.getText().toString());
 
-                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+                    usuarioDAO.getAllUsuarios(this, new UsuarioDAO.UsuariosCallback() {
+                        @Override
+                        public void onCallback(List<Usuario> usuarios) {
+                            for (Usuario user : usuarios) {
+                                if (!user.getId().equals(usuario.getId())) {
+                                    usuarioDAO.addUsuario(usuario, CadastroUsuraioActivity.this);
 
-                    usuarioDAO.addUsuario(usuario, this);
+                                    Intent intent = new Intent(CadastroUsuraioActivity.this, LoginActivity.class);
 
-                    Intent intent = new Intent(CadastroUsuraioActivity.this, LoginActivity.class);
-
-                    startActivity(intent);
-
+                                    startActivity(intent);
+                                }
+                            }
+                        }
+                    });
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CadastroUsuraioActivity.this);
                     builder.setTitle("ERRO");
