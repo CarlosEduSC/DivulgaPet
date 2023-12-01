@@ -86,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="textPersonName"/>
 
         </LinearLayout>
 
@@ -139,7 +140,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="phone"/>
         </LinearLayout>
 
         <LinearLayout
@@ -162,7 +164,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="textEmailAddress"/>
         </LinearLayout>
 
         <LinearLayout
@@ -185,7 +188,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="textPassword"/>
         </LinearLayout>
 
         <LinearLayout
@@ -208,7 +212,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="textPassword"/>
         </LinearLayout>
     </LinearLayout>
 

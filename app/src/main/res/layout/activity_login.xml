@@ -73,12 +73,13 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/edtNome"
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp" />
+                android:padding="7dp"
+                android:inputType="textEmailAddress"/>
 
         </LinearLayout>
 
@@ -102,7 +103,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp" />
+                android:padding="7dp"
+                android:inputType="textPassword"/>
         </LinearLayout>
 
         <Button

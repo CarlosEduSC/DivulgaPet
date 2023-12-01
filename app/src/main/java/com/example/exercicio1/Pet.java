@@ -90,13 +90,15 @@ public class Pet {
 
     private ArrayList<String> vacinas;
     private String descricao;
+    private String idUsuario;
 
-    public Pet(String nome, String tipo, String faixaEtaria, String raca, String sexo) {
+    public Pet(String nome, String tipo, String faixaEtaria, String raca, String sexo, String idUsuario) {
         this.nome = nome;
         this.tipo = tipo;
         this.faixaEtaria = faixaEtaria;
         this.raca = raca;
         this.sexo = sexo;
+        this.idUsuario = idUsuario;
     }
 
     public String getId() {return id;}
@@ -193,5 +195,11 @@ public class Pet {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getIdUsuario() {return idUsuario;}
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

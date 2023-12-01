@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
         android:orientation="vertical">
@@ -62,7 +62,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="textPersonName"/>
 
         </LinearLayout>
 
@@ -86,7 +87,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="number"/>
 
         </LinearLayout>
 
@@ -139,7 +141,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="phone"/>
         </LinearLayout>
 
         <LinearLayout
@@ -162,7 +165,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="textEmailAddress"/>
         </LinearLayout>
 
         <LinearLayout
@@ -185,7 +189,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="number"/>
         </LinearLayout>
 
         <LinearLayout
@@ -208,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -231,7 +236,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="number"/>
         </LinearLayout>
 
         <LinearLayout
@@ -289,13 +295,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/estado"
+                android:text="@string/complemento"
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
 
             <EditText
-                android:id="@+id/edtEstado"
+                android:id="@+id/edtComplemento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
@@ -323,7 +329,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="textPassword"/>
         </LinearLayout>
 
         <LinearLayout
@@ -346,12 +353,13 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="textPassword"/>
         </LinearLayout>
     </LinearLayout>
 
     <Button
-        android:id="@+id/btCadastro"
+        android:id="@+id/btAtualizar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

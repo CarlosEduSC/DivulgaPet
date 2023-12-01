@@ -1,14 +1,25 @@
 package com.example.exercicio1;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-public class PerfilDoadorActivity extends AppCompatActivity {
-
+public class PerfilDoadorActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+    private ImageView imgVoltar;
+    private ImageView imgMenu;
+    private PopupMenu menu;
+    private TextView txtDescricao;
     private ImageView imgPet;
     private TextView txtNomePet;
     private TextView txtTipo;
@@ -19,11 +30,30 @@ public class PerfilDoadorActivity extends AppCompatActivity {
     private TextView txtDataNascimento;
     private TextView txtTelefone;
     private TextView txtEmail;
+    private PetDAO petDAO;
+    private UsuarioDAO usuarioDAO;
+
+    private Pet animal = new Pet("", "", "", "", "", "");
+    private Usuario doador = new Usuario("","","","","");
+    private String petId;
+    private String userId;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_doador);
 
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("petId")) {
+            petId = intent.getStringExtra("petId");
+        }
+
+        if (intent != null && intent.hasExtra("userId")) {
+            userId = intent.getStringExtra("userId");
+        }
+
+        imgVoltar = findViewById(R.id.imgVoltar);
+        imgMenu = findViewById(R.id.imgMenu);
+        txtDescricao = findViewById(R.id.txtDescricao);
         imgPet = findViewById(R.id.imgPet);
         txtNomePet = findViewById(R.id.txtNomePet);
         txtTipo = findViewById(R.id.txtTipo);
@@ -35,18 +65,93 @@ public class PerfilDoadorActivity extends AppCompatActivity {
         txtTelefone = findViewById(R.id.txtTelefone);
         txtEmail = findViewById(R.id.txtEmail);
 
-        Pet bolaDeNeve = new Pet("Bola de Neve", Pet.Tipo.Cachorro.toString(), Pet.FaixaEtaria.anos35.getDescricao(), Pet.RacaCachorro.poodle.getDescricao(), Pet.Sexo.Macho.toString());
-        Usuario carlos = new Usuario("Carlos","07/02/2001","045999232323","carlos@gmail.com","1234");
+        petDAO = new PetDAO();
+        usuarioDAO = new UsuarioDAO();
 
-        imgPet.setImageResource(R.drawable.maltes);
-        txtNomePet.setText(bolaDeNeve.getNome());
-        txtTipo.setText(bolaDeNeve.getTipo());
-        txtRaca.setText(bolaDeNeve.getRaca());
-        txtFaixaEtaria.setText(bolaDeNeve.getFaixaEtaria());
-        txtSexo.setText(bolaDeNeve.getSexo());
-        txtNomeDoador.setText(carlos.getNome());
-        txtDataNascimento.setText(carlos.getDataNascimento());
-        txtTelefone.setText(carlos.getTelefone());
-        txtEmail.setText(carlos.getEmail());
+        petDAO.getPetById(petId, this, new PetDAO.GetPetCallback() {
+            @Override
+            public void onCallback(Pet pet) {
+                if (pet != null) {
+                    animal = pet;
+                    txtNomePet.setText(animal.getNome());
+                    txtRaca.setText(animal.getRaca());
+                    txtTipo.setText(animal.getTipo());
+                    txtFaixaEtaria.setText(animal.getFaixaEtaria());
+                    txtSexo.setText(animal.getSexo());
+
+                    usuarioDAO.getUsuarioById(animal.getIdUsuario().toString(), PerfilDoadorActivity.this, new UsuarioDAO.GetUsuarioCallback() {
+                        @Override
+                        public void onCallback(Usuario usuario) {
+                            doador = usuario;
+                            txtNomeDoador.setText(doador.getNome());
+                            txtDataNascimento.setText(doador.getDataNascimento());
+                            txtTelefone.setText(doador.getTelefone());
+                            txtEmail.setText(doador.getEmail());
+                        }
+                    });
+                } else {
+                    Log.e("DetalharActivity", "Erro ao obter pet");
+                    Toast.makeText(PerfilDoadorActivity.this, "Erro ao obter pet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        imgVoltar.setOnClickListener(this);
+        imgMenu.setOnClickListener(this);
+        txtDescricao.setOnClickListener(this);
+    }
+
+    private void OpenMenu(View view) {
+        menu = new PopupMenu(this, view);
+        MenuInflater inflater = menu.getMenuInflater();
+
+        inflater.inflate(R.menu.menu_logado, menu.getMenu());
+
+        menu.setOnMenuItemClickListener(this);
+
+        menu.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == imgVoltar) {
+            onBackPressed();
+
+        } else if (view == imgMenu) {
+            OpenMenu(view);
+
+        } else if (view == txtDescricao) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(PerfilDoadorActivity.this);
+            builder.setMessage(animal.getDescricao()).setCancelable(true);
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.filtro_background);
+            alertDialog.show();
+
+            TextView alertTextView = alertDialog.findViewById(android.R.id.message);
+            alertTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        if (menuItem.getItemId() == R.id.perfil) {
+            Intent intent = new Intent(PerfilDoadorActivity.this, PerfilActivity.class);
+            intent.putExtra("userId", userId);
+
+            startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.cadastrarPet) {
+            Intent intent = new Intent(PerfilDoadorActivity.this, CadastroPetActivity.class);
+            intent.putExtra("userId", userId);
+
+            startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.listaAnimais) {
+            Intent intent = new Intent(PerfilDoadorActivity.this, MainActivity.class);
+            intent.putExtra("userId", userId);
+
+            startActivity(intent);
+        }
+        return false;
     }
 }

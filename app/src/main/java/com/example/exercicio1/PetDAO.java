@@ -30,6 +30,8 @@ public class PetDAO {
         petData.put("vacinas", pet.getVacinas());
         petData.put("descricao", pet.getDescricao());
         petData.put("porte", pet.getPorte());
+        petData.put("castracao", pet.getCatracao());
+        petData.put("idUsuario", pet.getIdUsuario());
 
         db.collection("pet").add(pet).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -115,7 +117,7 @@ public class PetDAO {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<Pet> pets = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"));
+                    Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"));
 
                     pet.setId(documentSnapshot.getId());
                     pet.setPorte(documentSnapshot.getString("porte"));
@@ -141,17 +143,36 @@ public class PetDAO {
         });
     }
 
-    public Pet getPetById(String id, Context context) {
-        Pet[] pet = new Pet[1];
-
+    public void getPetById(String id, Context context, GetPetCallback callback) {
         db.collection("pet").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                pet[0] = documentSnapshot.toObject(Pet.class);
+                Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"));
+
+                pet.setId(documentSnapshot.getId());
+                pet.setPorte(documentSnapshot.getString("porte"));
+                pet.setCatracao(documentSnapshot.getString("catracao"));
+                pet.setDescricao(documentSnapshot.getString("descricao"));
+
+                List<String> vacinas = (List<String>) documentSnapshot.get("vacinas");
+                if (vacinas != null) {
+                    pet.setVacinas(new ArrayList<>(vacinas));
+                } else {
+                    pet.setVacinas(new ArrayList<>());
+                }
+                callback.onCallback(pet);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Tratar falha, se necessário
+                callback.onCallback(null);
             }
         });
+    }
 
-        return pet[0];
+    public interface GetPetCallback {
+        void onCallback(Pet pet);
     }
 
     private void mostrarDialogo(Context context, String titulo, String mensagem) {
