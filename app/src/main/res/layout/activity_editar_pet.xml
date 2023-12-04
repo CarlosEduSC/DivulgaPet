@@ -57,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/filtro_background"
                 android:layout_marginStart="5dp"
-                android:padding="7dp"/>
+                android:padding="7dp"
+                android:inputType="textPersonName"/>
 
         </LinearLayout>
 
@@ -77,12 +78,14 @@
                 android:layout_gravity="center"/>
 
             <RadioGroup
+                android:id="@+id/rgTipo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginStart="10dp">
 
                 <RadioButton
+                    android:id="@+id/rbCachorro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cachorro"
@@ -90,6 +93,7 @@
                     android:textColor="@color/black"/>
 
                 <RadioButton
+                    android:id="@+id/rbGato"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gato"
@@ -123,12 +127,14 @@
                 android:layout_gravity="center"/>
 
             <RadioGroup
+                android:id="@+id/rgSexo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginStart="10dp">
 
                 <RadioButton
+                    android:id="@+id/rbMacho"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/macho"
@@ -136,6 +142,7 @@
                     android:textColor="@color/black"/>
 
                 <RadioButton
+                    android:id="@+id/rbFemea"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/femea"
@@ -160,6 +167,7 @@
             android:layout_marginTop="5dp">
 
             <Switch
+                android:id="@+id/swCastrado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/castracao"
@@ -193,6 +201,7 @@
                 android:layout_gravity="center"/>
 
             <CheckBox
+                android:id="@+id/cbRaiva"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/raivaCanina"
@@ -201,6 +210,7 @@
                 android:layout_marginStart="5dp"/>
 
             <CheckBox
+                android:id="@+id/cbLeish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/leishmaniose"
@@ -236,6 +246,7 @@
             android:padding="7dp"/>
 
         <Button
+            android:id="@+id/btFoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/adicionarFoto"
@@ -252,29 +263,34 @@
             android:layout_marginTop="5dp">
 
             <ImageView
+                android:id="@+id/Foto1"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:background="@drawable/lista_background"/>
 
             <ImageView
+                android:id="@+id/Foto2"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:background="@drawable/lista_background"
                 android:layout_marginStart="10dp"/>
 
             <ImageView
+                android:id="@+id/Foto3"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:background="@drawable/lista_background"
                 android:layout_marginStart="10dp"/>
 
             <ImageView
+                android:id="@+id/Foto4"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:background="@drawable/lista_background"
                 android:layout_marginStart="10dp"/>
 
             <ImageView
+                android:id="@+id/Foto5"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:background="@drawable/lista_background"
@@ -282,6 +298,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btEditar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/editarpet"

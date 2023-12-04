@@ -103,14 +103,27 @@ public class CadastroUsuraioActivity extends AppCompatActivity implements View.O
                     usuarioDAO.getAllUsuarios(this, new UsuarioDAO.UsuariosCallback() {
                         @Override
                         public void onCallback(List<Usuario> usuarios) {
+                            boolean cadastrado = false;
                             for (Usuario user : usuarios) {
-                                if (!user.getId().equals(usuario.getId())) {
-                                    usuarioDAO.addUsuario(usuario, CadastroUsuraioActivity.this);
-
-                                    Intent intent = new Intent(CadastroUsuraioActivity.this, LoginActivity.class);
-
-                                    startActivity(intent);
+                                if (user.getEmail().equals(usuario.getEmail())) {
+                                    cadastrado = true;
+                                    break;
                                 }
+                            }
+
+                            if (cadastrado == false) {
+                                usuarioDAO.addUsuario(usuario, CadastroUsuraioActivity.this);
+
+                                Intent intent = new Intent(CadastroUsuraioActivity.this, LoginActivity.class);
+
+                                startActivity(intent);
+
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CadastroUsuraioActivity.this);
+                                builder.setTitle("ERRO");
+                                builder.setMessage("Email já cadastrado!");
+                                builder.setPositiveButton("OK", null);
+                                builder.create().show();
                             }
                         }
                     });

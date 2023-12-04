@@ -196,16 +196,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcoes_raca_cachorro);
                     adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spRaca.setAdapter(adapterRaca);
-                    tipo = spTipo.getSelectedItem().toString();
-                    atualizarLista(tipo, raca, faixaEtaria, sexo);
 
                 } else if (spTipo.getSelectedItem() == opcoes_tipo[2]) {
                     ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opcoes_raca_gato);
                     adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spRaca.setAdapter(adapterRaca);
-                    tipo = spTipo.getSelectedItem().toString();
-                    atualizarLista(tipo, raca, faixaEtaria, sexo);
                 }
+                tipo = spTipo.getSelectedItem().toString();
+                atualizarLista(tipo, raca, faixaEtaria, sexo);
+
             } else {
                 ArrayList<String> raca0 = new ArrayList<String>();
                 raca0.add("Raça");

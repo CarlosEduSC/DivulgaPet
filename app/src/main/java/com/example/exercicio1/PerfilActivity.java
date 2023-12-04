@@ -9,11 +9,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -29,10 +31,11 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
     private TextView txtDataNascimento;
     private TextView txtTelefone;
     private TextView txtEmail;
+    private LinearLayout lsCEP;
     private TextView txtSenha;
     private Button btEditarPerfil;
     private ListView lsPets;
-    private PetsAdapter petsAdapter;
+    private PerfilAdapter perfilAdapter;
     private List<Pet> petsLista = new ArrayList<Pet>();
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     private PetDAO petDAO = new PetDAO();
@@ -55,12 +58,13 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
         txtDataNascimento = findViewById(R.id.txtDataNascimento);
         txtTelefone = findViewById(R.id.txtTelefone);
         txtEmail = findViewById(R.id.txtEmail);
+        lsCEP = findViewById(R.id.lsCEP);
         txtSenha = findViewById(R.id.txtSenha);
         btEditarPerfil = findViewById(R.id.btEditarPerfil);
         lsPets = findViewById(R.id.lsPets);
 
-        petsAdapter = new PetsAdapter(this, petsLista);
-        lsPets.setAdapter(petsAdapter);
+        perfilAdapter = new PerfilAdapter(this, petsLista, userId);
+        lsPets.setAdapter(perfilAdapter);
         lsPets.setOnItemClickListener(this);
 
         petDAO.getAllPets(this, new PetDAO.PetCallback() {
@@ -72,11 +76,11 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
                     for (Pet pet : pets) {
                         if (pet.getIdUsuario().equals(userId)) {
                             petsLista.add(pet);
+                            perfilAdapter.notifyDataSetChanged();
                         }
                     }
-                    petsAdapter.notifyDataSetChanged();
                 } else {
-                    Log.e("MainActivity", "Erro ao obter a lista de pets");
+                    Log.e("PerfilActivity", "Erro ao obter a lista de pets");
                     Toast.makeText(PerfilActivity.this, "Erro ao obter a lista de pets", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -104,6 +108,7 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
 
         imgVoltar.setOnClickListener(this);
         imgMenu.setOnClickListener(this);
+        lsCEP.setOnClickListener(this);
         btEditarPerfil.setOnClickListener(this);
     }
 
@@ -111,11 +116,35 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
         menu = new PopupMenu(this, view);
         MenuInflater inflater = menu.getMenuInflater();
 
-        inflater.inflate(R.menu.menu_logado, menu.getMenu());
+        inflater.inflate(R.menu.menu_perfil, menu.getMenu());
 
         menu.setOnMenuItemClickListener(this);
 
         menu.show();
+    }
+
+    public void showCustomDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.activity_endereco, null);
+
+        TextView txtCepNumero = view.findViewById(R.id.txtCepNumero);
+        TextView txtRua = view.findViewById(R.id.txtRua);
+        TextView txtNumero = view.findViewById(R.id.txtNumero);
+        TextView txtBairro = view.findViewById(R.id.txtBairro);
+        TextView txtCidade = view.findViewById(R.id.txtCidade);
+        TextView txtComplemento = view.findViewById(R.id.txtComplemento);
+
+        txtCepNumero.setText(doador.getCep());
+        txtRua.setText(doador.getRua());
+        String numero = "" + doador.getNumero();
+        txtNumero.setText(numero);
+        txtBairro.setText(doador.getBairro());
+        txtCidade.setText(doador.getCidade());
+        txtComplemento.setText(doador.getComplemento());
+
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -126,9 +155,12 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
         } else if (view == imgMenu) {
             OpenMenu(view);
 
+        } else if (view == lsCEP) {
+            showCustomDialog();
+
         } else if (view == btEditarPerfil) {
             Intent intent = new Intent(PerfilActivity.this, EditarPerfilActivity.class);
-
+            intent.putExtra("userId", userId);
             startActivity(intent);
         }
     }

@@ -28,6 +28,8 @@
         <activity android:name=".PerfilDoadorActivity" />
         <activity android:name=".CadastroPetActivity" />
         <activity android:name=".EditarPerfilActivity" />
+        <activity android:name=".EditarPetActivity"/>
+        <activity android:name=".ListaInteressadosActivity"/>
     </application>
 
 </manifest>

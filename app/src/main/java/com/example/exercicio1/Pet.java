@@ -161,7 +161,7 @@ public class Pet {
 
     public String getCatracao() {
         if (catracao == null) {
-            return "Não informado";
+            return "Não";
         } else {
             return catracao;
         }

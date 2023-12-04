@@ -1,5 +1,6 @@
 package com.example.exercicio1;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class EditarPerfilActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private ImageView imgVoltar;
@@ -68,6 +70,7 @@ public class EditarPerfilActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onCallback(Usuario usuario) {
                 doador = usuario;
+                String numero = "" + doador.getNumero();
                 edtNome.setText(doador.getNome());
                 edtCPF.setText(doador.getCpf());
                 txtData.setText(doador.getDataNascimento());
@@ -75,7 +78,7 @@ public class EditarPerfilActivity extends AppCompatActivity implements View.OnCl
                 edtEmail.setText(doador.getEmail());
                 edtCEP.setText(doador.getCep());
                 edtRua.setText(doador.getRua());
-                edtNumero.setText(doador.getNumero());
+                edtNumero.setText(numero);
                 edtBairro.setText(doador.getBairro());
                 edtCidade.setText(doador.getCidade());
                 edtComplemento.setText(doador.getComplemento());
@@ -131,15 +134,56 @@ public class EditarPerfilActivity extends AppCompatActivity implements View.OnCl
             showDatePickerDialog();
 
         } else if (view == btAtualizar) {
-            if (!edtSenha.getText().toString().equals("") && !edtConfirmarSenha.getText().toString().equals("") && !edtNome.getText().toString().equals("") && !txtData.getText().toString().equals("dd/mm/aa") && !edtTelefone.getText().toString().equals("") && !edtEmail.getText().toString().equals("")) {
+            if (!edtSenha.getText().toString().equals("") && !edtNome.getText().toString().equals("") && !txtData.getText().toString().equals("dd/mm/aa") && !edtTelefone.getText().toString().equals("") && !edtEmail.getText().toString().equals("")) {
                 if (edtSenha.getText().toString().equals(edtConfirmarSenha.getText().toString())) {
-                    usuarioDAO.editUsuario(doador,this);
+                    Usuario usuario = new Usuario(edtNome.getText().toString(), txtData.getText().toString(), edtTelefone.getText().toString(), edtEmail.getText().toString(), edtSenha.getText().toString());
+                    usuario.setId(userId);
+                    usuario.setCep(edtCEP.getText().toString());
+                    usuario.setRua(edtRua.getText().toString());
+                    usuario.setNumero(Integer.parseInt(edtNumero.getText().toString()));
+                    usuario.setBairro(edtBairro.getText().toString());
+                    usuario.setCidade(edtCidade.getText().toString());
+                    usuario.setComplemento(edtComplemento.getText().toString());
+                    usuarioDAO.getAllUsuarios(this, new UsuarioDAO.UsuariosCallback() {
+                        @Override
+                        public void onCallback(List<Usuario> usuarios) {
+                            boolean cadastrado = false;
+                            for (Usuario user : usuarios) {
+                                if (user.getEmail().equals(usuario.getEmail()) && !user.getId().equals(usuario.getId())) {
+                                    cadastrado = true;
+                                    break;
+                                }
+                            }
 
-                    Intent intent = new Intent(EditarPerfilActivity.this, PerfilActivity.class);
-                    intent.putExtra("userId", userId);
+                            if (cadastrado == false) {
+                                usuarioDAO.editUsuario(usuario, EditarPerfilActivity.this);
 
-                    startActivity(intent);
+                                Intent intent = new Intent(EditarPerfilActivity.this, PerfilActivity.class);
+
+                                startActivity(intent);
+
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(EditarPerfilActivity.this);
+                                builder.setTitle("ERRO");
+                                builder.setMessage("Email já cadastrado!");
+                                builder.setPositiveButton("OK", null);
+                                builder.create().show();
+                            }
+                        }
+                    });
+                }  else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EditarPerfilActivity.this);
+                    builder.setTitle("ERRO");
+                    builder.setMessage("As senhas não coincidem!");
+                    builder.setPositiveButton("OK", null);
+                    builder.create().show();
                 }
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditarPerfilActivity.this);
+                builder.setTitle("ERRO");
+                builder.setMessage("Um ou mais campos estão incorretos!");
+                builder.setPositiveButton("OK", null);
+                builder.create().show();
             }
         }
     }

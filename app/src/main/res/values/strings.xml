@@ -49,7 +49,7 @@
     <string name="nomePet">Nome do Pet:</string>
     <string name="editarpet">EDITAR PET</string>
     <string name="doador">Doador</string>
-    <string name="complemento">Complemento:\n</string>
+    <string name="complemento">Complemento:</string>
     <array name="tipo">
         <item>Tipo</item>
         <item>Cachorro</item>
@@ -90,5 +90,12 @@
         <item>Sexo</item>
         <item>Macho</item>
         <item>Fêmea</item>
+    </array>
+
+    <array name="porte">
+        <item>Porte</item>
+        <item>Pequeno</item>
+        <item>Médio</item>
+        <item>Grande</item>
     </array>
 </resources>
