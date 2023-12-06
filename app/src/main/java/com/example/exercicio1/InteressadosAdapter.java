@@ -12,25 +12,26 @@ import java.util.List;
 
 public class InteressadosAdapter extends BaseAdapter {
     private final Context context;
-    private List<Usuario> usuarios;
+    private List<Usuario> interessados;
+    private String petId;
 
-    public InteressadosAdapter(Context context, List<Usuario> usuarios) {
+    public InteressadosAdapter(Context context, List<Usuario> interessados) {
         this.context = context;
-        this.usuarios = usuarios;
+        this.interessados = interessados;
     }
     @Override
     public int getCount() {
-        return 0;
+        return interessados.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return interessados.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -41,9 +42,9 @@ public class InteressadosAdapter extends BaseAdapter {
         TextView telefone = (TextView) v.findViewById(R.id.txtTelefone);
         TextView email = (TextView) v.findViewById(R.id.txtEmail);
 
-        nome.setText(usuarios.get(i).getNome());
-        telefone.setText(usuarios.get(i).getTelefone());
-        email.setText(usuarios.get(i).getEmail());
+        nome.setText(interessados.get(i).getNome());
+        telefone.setText(interessados.get(i).getTelefone());
+        email.setText(interessados.get(i).getEmail());
 
         return v;
     }

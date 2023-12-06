@@ -143,6 +143,8 @@ public class DetalharActivity extends AppCompatActivity implements View.OnClickL
 
         } else if (view == btTenhoInteresse) {
             if (userId != null) {
+                petDAO.addInteressadoById(petId, userId, this);
+
                 Intent intent = new Intent(DetalharActivity.this, PerfilDoadorActivity.class);
                 intent.putExtra("userId", userId);
                 intent.putExtra("petId", petId);

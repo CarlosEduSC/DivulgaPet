@@ -180,7 +180,7 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
         menu = new PopupMenu(this, view);
         MenuInflater inflater = menu.getMenuInflater();
 
-        inflater.inflate(R.menu.menu_cadastro_pet, menu.getMenu());
+        inflater.inflate(R.menu.menu_logado, menu.getMenu());
 
         menu.setOnMenuItemClickListener(this);
 
@@ -242,10 +242,10 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
 
                 petDAO.editePet(animal,this);
 
-//                Intent intent = new Intent(EditarPetActivity.this, PerfilActivity.class);
-//                intent.putExtra("userId", userId);
-//
-//                startActivity(intent);
+                Intent intent = new Intent(EditarPetActivity.this, PerfilActivity.class);
+                intent.putExtra("userId", userId);
+
+                startActivity(intent);
 
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditarPetActivity.this);
@@ -266,6 +266,11 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
             startActivity(intent);
         } else if (menuItem.getItemId() == R.id.listaAnimais) {
             Intent intent = new Intent(EditarPetActivity.this, MainActivity.class);
+            intent.putExtra("userId", userId);
+
+            startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.cadastrarPet) {
+            Intent intent = new Intent(EditarPetActivity.this, CadastroPetActivity.class);
             intent.putExtra("userId", userId);
 
             startActivity(intent);

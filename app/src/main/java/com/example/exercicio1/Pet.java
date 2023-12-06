@@ -91,6 +91,7 @@ public class Pet {
     private ArrayList<String> vacinas;
     private String descricao;
     private String idUsuario;
+    private ArrayList<String> interessados;
 
     public Pet(String nome, String tipo, String faixaEtaria, String raca, String sexo, String idUsuario) {
         this.nome = nome;
@@ -201,5 +202,13 @@ public class Pet {
 
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public ArrayList<String> getInteressados() {
+        return interessados;
+    }
+
+    public void setInteressados(ArrayList<String> interessados) {
+        this.interessados = interessados;
     }
 }

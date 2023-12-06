@@ -72,19 +72,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         listaPets.setAdapter(petsAdapter);
         listaPets.setOnItemClickListener(this);
         petDAO.getAllPets(this, new PetDAO.PetCallback() {
-
             @Override
             public void onCallback(List<Pet> pets) {
                 if (pets != null) {
                     petsLista.clear();
-                    petsLista.addAll(pets);
+
+                    for (Pet pet : pets) {
+                        if (userId != null && !pet.getIdUsuario().equals(userId)) {
+                            petsLista.add(pet);
+                        }
+                    }
+
                     petsAdapter.notifyDataSetChanged();
                 } else {
-                    Log.e("MainActivity", "Erro ao obter a lista de pets");
                     Toast.makeText(MainActivity.this, "Erro ao obter a lista de pets", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         Spinners();
 
@@ -270,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         boolean faixaEtariaCorresponde = faixaEtaria == null || faixaEtaria.isEmpty() || faixaEtaria.equals(pet.getFaixaEtaria());
                         boolean sexoCorresponde = sexo == null || sexo.isEmpty() || sexo.equals(pet.getSexo());
 
-                        if (tipoCorresponde && racaCorresponde && faixaEtariaCorresponde && sexoCorresponde) {
+                        if (tipoCorresponde && racaCorresponde && faixaEtariaCorresponde && sexoCorresponde && !pet.getIdUsuario().equals(userId)) {
                             novaLista.add(pet);
                         }
                     }

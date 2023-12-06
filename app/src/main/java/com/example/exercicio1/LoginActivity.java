@@ -72,12 +72,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         for (Usuario usuario : usuarios) {
                             if (usuario.getEmail().equals(edtEmail.getText().toString()) && usuario.getSenha().equals(edtSenha.getText().toString())) {
+                                usuarioEncontrado = true;
+                                userId = usuario.getId();
+
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.putExtra("userId", usuario.getId());
 
                                 startActivity(intent);
-                                usuarioEncontrado = true;
-                                userId = usuario.getId();
                                 break;
                             }
                         }

@@ -63,6 +63,7 @@ public class PerfilAdapter extends BaseAdapter implements View.OnClickListener {
         raca.setText(currentPet.getRaca());
         faixaEtaria.setText(currentPet.getFaixaEtaria());
         sexo.setText(currentPet.getSexo());
+        userId = p.getIdUsuario();
 
         interessados.setOnClickListener(this);
         editarPet.setOnClickListener(this);

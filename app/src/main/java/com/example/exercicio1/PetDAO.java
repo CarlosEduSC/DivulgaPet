@@ -2,6 +2,8 @@ package com.example.exercicio1;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -64,6 +66,8 @@ public class PetDAO {
             petData.put("vacinas", pet.getVacinas());
             petData.put("descricao", pet.getDescricao());
             petData.put("porte", pet.getPorte());
+            petData.put("idUsuario", pet.getIdUsuario());
+            petData.put("interessados", pet.getInteressados());
 
             db.collection("pet").document(pet.getId()).set(petData)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -165,10 +169,95 @@ public class PetDAO {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Tratar falha, se necessário
                 callback.onCallback(null);
             }
         });
+    }
+
+    public void addInteressadoById(String petId, String interessadoId, Context context) {
+        DocumentReference petRef = db.collection("pet").document(petId);
+
+        petRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    List<String> interessados = (List<String>) documentSnapshot.get("interessados");
+
+                    if (interessados == null) {
+                        interessados = new ArrayList<>();
+                    }
+                    if (!interessados.contains(interessadoId)) {
+                        interessados.add(interessadoId);
+
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("interessados", interessados);
+
+                        petRef.update(data)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        String mensagemErro = "Voçe foi adicionado a lista de interessados no pet!.";
+                                        mostrarDialogo(context, "AVISO", mensagemErro);
+                                    }
+                                });
+
+                    } else {
+                        String mensagemErro = "Voçe já está incluido na lista de interessados do pet!";
+                        mostrarDialogo(context, "AVISO", mensagemErro);
+                    }
+                } else {
+                    String mensagemErro = "Pet não encontrado.";
+                    mostrarDialogo(context, "ERRO", mensagemErro);
+                }
+            }
+        });
+    }
+
+    public void getPetInteressados(String petId, Context context, GetInteressadosCallback callback) {
+        DocumentReference petRef = db.collection("pet").document(petId);
+
+        petRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    List<String> interessadosIds = (List<String>) documentSnapshot.get("interessados");
+
+                    if (interessadosIds != null && !interessadosIds.isEmpty()) {
+                        List<Usuario> interessados = new ArrayList<>();
+
+                        for (String interessadoId : interessadosIds) {
+                            UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+                            usuarioDAO.getUsuarioById(interessadoId, context, new UsuarioDAO.GetUsuarioCallback() {
+                                @Override
+                                public void onCallback(Usuario usuario) {
+                                    int totalInteressados = interessadosIds.size();
+                                    int count = 0;
+                                    if (usuario != null) {
+                                        interessados.add(usuario);
+                                    }
+
+                                    count++;
+
+                                    if (count == totalInteressados) {
+                                        callback.onCallback(interessados);
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        callback.onCallback(null);
+                    }
+                } else {
+                    String mensagemErro = "Pet não encontrado.";
+                    mostrarDialogo(context, "ERRO", mensagemErro);
+                }
+            }
+        });
+    }
+
+    public interface GetInteressadosCallback {
+        void onCallback(List<Usuario> interessados);
     }
 
     public interface GetPetCallback {

@@ -74,7 +74,7 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
                 if (pets != null) {
                     petsLista.clear();
                     for (Pet pet : pets) {
-                        if (pet.getIdUsuario().equals(userId)) {
+                        if (pet.getIdUsuario().equals(userId.toString())) {
                             petsLista.add(pet);
                             perfilAdapter.notifyDataSetChanged();
                         }
