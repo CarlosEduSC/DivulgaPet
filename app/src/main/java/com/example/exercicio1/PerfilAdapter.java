@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 public class PerfilAdapter extends BaseAdapter implements View.OnClickListener {
@@ -19,7 +23,7 @@ public class PerfilAdapter extends BaseAdapter implements View.OnClickListener {
     private Button editarPet;
     private String userId;
     private String petId;
-    private Pet p = new Pet("","","","","","");
+    private Pet p = new Pet("","","","","","", "");
 
 
     public PerfilAdapter(Context context, List<Pet> pets, String userId) {
@@ -64,6 +68,8 @@ public class PerfilAdapter extends BaseAdapter implements View.OnClickListener {
         faixaEtaria.setText(currentPet.getFaixaEtaria());
         sexo.setText(currentPet.getSexo());
         userId = p.getIdUsuario();
+
+        Glide.with(context).load(p.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(img);
 
         interessados.setOnClickListener(this);
         editarPet.setOnClickListener(this);

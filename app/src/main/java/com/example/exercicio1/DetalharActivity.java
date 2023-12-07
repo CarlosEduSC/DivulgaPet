@@ -17,6 +17,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
 public class DetalharActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private ImageView imgVoltar;
     private ImageView imgMenu;
@@ -37,7 +41,7 @@ public class DetalharActivity extends AppCompatActivity implements View.OnClickL
 
     private PetDAO petDAO;
 
-    private Pet animal = new Pet("", "", "", "", "", "");
+    private Pet animal = new Pet("", "", "", "", "", "", "");
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,8 @@ public class DetalharActivity extends AppCompatActivity implements View.OnClickL
                     txtFaixaEtaria.setText(animal.getFaixaEtaria());
                     txtSexo.setText(animal.getSexo());
                     txtCastrado.setText(animal.getCatracao());
+
+                    Glide.with(DetalharActivity.this).load(animal.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
 
                     if (animal.getVacinas().size() == 1) {
                         txtVacinas.setText(animal.getVacinas().get(0));

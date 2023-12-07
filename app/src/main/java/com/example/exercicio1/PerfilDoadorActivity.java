@@ -15,6 +15,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
 public class PerfilDoadorActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     private ImageView imgVoltar;
     private ImageView imgMenu;
@@ -33,7 +37,7 @@ public class PerfilDoadorActivity extends AppCompatActivity implements View.OnCl
     private PetDAO petDAO;
     private UsuarioDAO usuarioDAO;
 
-    private Pet animal = new Pet("", "", "", "", "", "");
+    private Pet animal = new Pet("", "", "", "", "", "", "");
     private Usuario doador = new Usuario("","","","","");
     private String petId;
     private String userId;
@@ -78,6 +82,8 @@ public class PerfilDoadorActivity extends AppCompatActivity implements View.OnCl
                     txtTipo.setText(animal.getTipo());
                     txtFaixaEtaria.setText(animal.getFaixaEtaria());
                     txtSexo.setText(animal.getSexo());
+
+                    Glide.with(PerfilDoadorActivity.this).load(animal.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
 
                     usuarioDAO.getUsuarioById(animal.getIdUsuario().toString(), PerfilDoadorActivity.this, new UsuarioDAO.GetUsuarioCallback() {
                         @Override

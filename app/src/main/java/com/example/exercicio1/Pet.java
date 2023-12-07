@@ -93,13 +93,16 @@ public class Pet {
     private String idUsuario;
     private ArrayList<String> interessados;
 
-    public Pet(String nome, String tipo, String faixaEtaria, String raca, String sexo, String idUsuario) {
+    private String foto;
+
+    public Pet(String nome, String tipo, String faixaEtaria, String raca, String sexo, String idUsuario, String foto) {
         this.nome = nome;
         this.tipo = tipo;
         this.faixaEtaria = faixaEtaria;
         this.raca = raca;
         this.sexo = sexo;
         this.idUsuario = idUsuario;
+        this.foto = foto;
     }
 
     public String getId() {return id;}
@@ -210,5 +213,11 @@ public class Pet {
 
     public void setInteressados(ArrayList<String> interessados) {
         this.interessados = interessados;
+    }
+
+    public String getFoto() {return foto;}
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

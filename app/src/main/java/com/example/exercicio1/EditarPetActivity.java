@@ -2,7 +2,11 @@ package com.example.exercicio1;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +22,20 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class EditarPetActivity extends AppCompatActivity implements View.OnClickListener, PopupMenu.OnMenuItemClickListener, AdapterView.OnItemSelectedListener, RadioGroup.OnCheckedChangeListener {
     private ImageView imgVoltar;
@@ -40,18 +55,22 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
     private CheckBox cbLeish;
     private EditText edtDescricao;
     private Button btFoto;
+    private ImageView imgPet;
     private Button btEditar;
+    private Button btExcluir;
     private PopupMenu menu;
     private String[] opcoes_raca_cachorro;
     private String[] opcoes_raca_gato;
     private String[] opcoes_faixa_etaria;
     private String[] opcoes_porte;
 
-    private Pet animal = new Pet("","","","","","");
+    private Pet animal = new Pet("","","","","","", "");
 
     private String userId;
     private String petId;
     private PetDAO petDAO = new PetDAO();
+    private static final int REQUEST_IMAGE_PICK = 1;
+    private String caminhoFotoAtual;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_pet);
@@ -80,8 +99,10 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
         cbRaiva = findViewById(R.id.cbRaiva);
         cbLeish = findViewById(R.id.cbLeish);
         edtDescricao = findViewById(R.id.edtDescricao);
+        imgPet = findViewById(R.id.imgPet);
         btFoto = findViewById(R.id.btFoto);
         btEditar = findViewById(R.id.btEditar);
+        btExcluir = findViewById(R.id.btExcluir);
 
         opcoes_raca_cachorro = getResources().getStringArray(R.array.raca_cachorro);
         opcoes_raca_gato = getResources().getStringArray(R.array.raca_gato);
@@ -147,6 +168,10 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
                 }
 
                 edtDescricao.setText(pet.getDescricao());
+
+                if (pet.getFoto() != null) {
+                    Glide.with(EditarPetActivity.this).load(pet.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
+                }
             }
         });
 
@@ -196,7 +221,7 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
             OpenMenu(view);
 
         } else if (view == btEditar) {
-            if (!edtNome.getText().equals("") && rgTipo.getCheckedRadioButtonId() != -1 && !spRaca.getSelectedItem().toString().equals("Raça") && rgSexo.getCheckedRadioButtonId() != -1 && !spFaixaEtaria.getSelectedItem().toString().equals("Faixa Etária")) {
+            if (!edtNome.getText().equals("") && rgTipo.getCheckedRadioButtonId() != -1 && !spRaca.getSelectedItem().toString().equals("Raça") && rgSexo.getCheckedRadioButtonId() != -1 && !spFaixaEtaria.getSelectedItem().toString().equals("Faixa Etária") && imgPet.getDrawable() != null && userId != null) {
                 int idtipo = rgTipo.getCheckedRadioButtonId();
                 int idsexo = rgSexo.getCheckedRadioButtonId();
                 animal.setIdUsuario(userId);
@@ -254,6 +279,53 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
                 builder.setPositiveButton("OK", null);
                 builder.create().show();
             }
+        } else if (view == btFoto) {
+            Intent escolherFotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            escolherFotoIntent.setType("image/*");
+
+            Intent capturarFotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            File fotoFile = null;
+            try {
+                fotoFile = criarArquivoImagem();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (fotoFile != null) {
+                Uri fotoUri = FileProvider.getUriForFile(this, "com.example.android.fileprovider", fotoFile);
+                capturarFotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fotoUri);
+            }
+
+            Intent chooserIntent = Intent.createChooser(escolherFotoIntent, "Escolha uma foto");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{capturarFotoIntent});
+
+            startActivityForResult(chooserIntent, REQUEST_IMAGE_PICK);
+        }
+    }
+
+    private File criarArquivoImagem() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String nomeArquivo = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File arquivoImagem = File.createTempFile(nomeArquivo, ".jpg", storageDir);
+        caminhoFotoAtual = arquivoImagem.getAbsolutePath();
+        return arquivoImagem;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                Uri imagemSelecionadaUri = data.getData();
+                animal.setFoto(imagemSelecionadaUri.toString());
+            } else if (!TextUtils.isEmpty(caminhoFotoAtual)) {
+                animal.setFoto(caminhoFotoAtual);
+            }
+
+            Glide.with(EditarPetActivity.this).load(animal.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
         }
     }
 

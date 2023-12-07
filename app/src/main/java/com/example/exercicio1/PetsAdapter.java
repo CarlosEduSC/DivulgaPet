@@ -8,6 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 public class PetsAdapter extends BaseAdapter {
@@ -46,12 +50,16 @@ public class PetsAdapter extends BaseAdapter {
         TextView faixaEtaria = (TextView) v.findViewById(R.id.txtFaixaEtaria);
         TextView sexo = (TextView) v.findViewById(R.id.txtSexo);
 
+
+
         Pet currentPet = pets.get(i);
         nome.setText(currentPet.getNome());
         tipo.setText(currentPet.getTipo());
         raca.setText(currentPet.getRaca());
         faixaEtaria.setText(currentPet.getFaixaEtaria());
         sexo.setText(currentPet.getSexo());
+
+        Glide.with(context).load(currentPet.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(img);
 
         return v;
 

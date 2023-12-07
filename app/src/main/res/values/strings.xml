@@ -50,6 +50,7 @@
     <string name="editarpet">EDITAR PET</string>
     <string name="doador">Doador</string>
     <string name="complemento">Complemento:</string>
+    <string name="excluirpet">EXCLUIR PET</string>
     <array name="tipo">
         <item>Tipo</item>
         <item>Cachorro</item>

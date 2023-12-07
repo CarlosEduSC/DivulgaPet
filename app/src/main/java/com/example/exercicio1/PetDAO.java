@@ -34,6 +34,8 @@ public class PetDAO {
         petData.put("porte", pet.getPorte());
         petData.put("castracao", pet.getCatracao());
         petData.put("idUsuario", pet.getIdUsuario());
+        petData.put("interessados", pet.getInteressados());
+        petData.put("foto", pet.getFoto());
 
         db.collection("pet").add(pet).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -68,6 +70,7 @@ public class PetDAO {
             petData.put("porte", pet.getPorte());
             petData.put("idUsuario", pet.getIdUsuario());
             petData.put("interessados", pet.getInteressados());
+            petData.put("foto", pet.getFoto());
 
             db.collection("pet").document(pet.getId()).set(petData)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -121,7 +124,7 @@ public class PetDAO {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<Pet> pets = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"));
+                    Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"), documentSnapshot.getString("foto"));
 
                     pet.setId(documentSnapshot.getId());
                     pet.setPorte(documentSnapshot.getString("porte"));
@@ -134,6 +137,14 @@ public class PetDAO {
                     } else {
                         pet.setVacinas(new ArrayList<>());
                     }
+
+                    List<String> interessados = (List<String>) documentSnapshot.get("interessados");
+                    if (interessados != null) {
+                        pet.setInteressados(new ArrayList<>(interessados));
+                    } else {
+                        pet.setInteressados(new ArrayList<>());
+                    }
+
                     pets.add(pet);
                 }
 
@@ -151,7 +162,7 @@ public class PetDAO {
         db.collection("pet").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"));
+                Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"), documentSnapshot.getString("foto"));
 
                 pet.setId(documentSnapshot.getId());
                 pet.setPorte(documentSnapshot.getString("porte"));
@@ -163,6 +174,13 @@ public class PetDAO {
                     pet.setVacinas(new ArrayList<>(vacinas));
                 } else {
                     pet.setVacinas(new ArrayList<>());
+                }
+
+                List<String> interessados = (List<String>) documentSnapshot.get("interessados");
+                if (interessados != null) {
+                    pet.setInteressados(new ArrayList<>(interessados));
+                } else {
+                    pet.setInteressados(new ArrayList<>());
                 }
                 callback.onCallback(pet);
             }

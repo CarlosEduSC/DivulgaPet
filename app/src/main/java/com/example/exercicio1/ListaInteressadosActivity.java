@@ -14,6 +14,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +37,7 @@ public class ListaInteressadosActivity extends AppCompatActivity implements View
 
     private PetDAO petDAO;
 
-    private Pet animal = new Pet("", "", "", "", "", "");
+    private Pet animal = new Pet("", "", "", "", "", "", "");
     private ArrayList<Usuario> usuariosInteressados = new ArrayList<Usuario>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +74,8 @@ public class ListaInteressadosActivity extends AppCompatActivity implements View
                     txtTipo.setText(animal.getTipo());
                     txtFaixaEtaria.setText(animal.getFaixaEtaria());
                     txtSexo.setText(animal.getSexo());
+                    Glide.with(ListaInteressadosActivity.this).load(pet.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
+
                 } else {
                     Log.e("DetalharActivity", "Erro ao obter pet");
                     Toast.makeText(ListaInteressadosActivity.this, "Erro ao obter pet", Toast.LENGTH_SHORT).show();

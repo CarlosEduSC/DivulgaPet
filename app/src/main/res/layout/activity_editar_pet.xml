@@ -239,7 +239,7 @@
         <EditText
             android:id="@+id/edtDescricao"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="80dp"
             android:background="@drawable/lista_background"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
@@ -256,56 +256,42 @@
             android:background="@drawable/button_background"
             android:layout_marginTop="10dp"/>
 
+        <ImageView
+            android:id="@+id/imgPet"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/lista_background"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="10dp">
 
-            <ImageView
-                android:id="@+id/Foto1"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/lista_background"/>
-
-            <ImageView
-                android:id="@+id/Foto2"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/lista_background"
+            <Button
+                android:id="@+id/btEditar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editarpet"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:background="@drawable/button_background"
                 android:layout_marginStart="10dp"/>
 
-            <ImageView
-                android:id="@+id/Foto3"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/lista_background"
-                android:layout_marginStart="10dp"/>
-
-            <ImageView
-                android:id="@+id/Foto4"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/lista_background"
-                android:layout_marginStart="10dp"/>
-
-            <ImageView
-                android:id="@+id/Foto5"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/lista_background"
-                android:layout_marginStart="10dp"/>
+            <Button
+                android:id="@+id/btExcluir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/excluirpet"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:background="@drawable/button_background"
+                android:layout_marginStart="120dp"/>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btEditar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/editarpet"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:background="@drawable/button_background"
-            android:layout_marginTop="10dp"/>
     </LinearLayout>
 </LinearLayout>
