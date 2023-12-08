@@ -9,11 +9,11 @@ public class Pet {
         Gato
     }
     public enum FaixaEtaria {
-        meses05("0 há 5 meses"),
-        meses611("6 há 11 meses"),
-        anos12("1 há 2 anos"),
-        anos35("3 há 5 anos"),
-        anos610("6 há 10 anos"),
+        meses05("0 a 5 meses"),
+        meses611("6 a 11 meses"),
+        anos12("1 a 2 anos"),
+        anos35("3 a 5 anos"),
+        anos610("6 a 10 anos"),
         mais10("mais de 10 anos");
 
         private final String descricao;
