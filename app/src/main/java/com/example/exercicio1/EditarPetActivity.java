@@ -1,12 +1,15 @@
 package com.example.exercicio1;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -69,7 +73,7 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
     private String userId;
     private String petId;
     private PetDAO petDAO = new PetDAO();
-    private static final int REQUEST_IMAGE_PICK = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private String caminhoFotoAtual;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,6 +185,7 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
         spRaca.setOnItemSelectedListener(this);
         btFoto.setOnClickListener(this);
         btEditar.setOnClickListener(this);
+        btExcluir.setOnClickListener(this);
     }
 
     private void Spinners() {
@@ -215,7 +220,10 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         if (view == imgVoltar) {
-            onBackPressed();
+            Intent intent = new Intent(EditarPetActivity.this, PerfilActivity.class);
+            intent.putExtra("userId", userId);
+
+            startActivity(intent);
 
         } else if (view == imgMenu) {
             OpenMenu(view);
@@ -279,54 +287,78 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
                 builder.setPositiveButton("OK", null);
                 builder.create().show();
             }
+        } else if (view == btExcluir) {
+            petDAO.removePet(petId,this);
+
+            Intent intent = new Intent(EditarPetActivity.this, PerfilActivity.class);
+            intent.putExtra("userId", userId);
+
+            startActivity(intent);
         } else if (view == btFoto) {
-            Intent escolherFotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            escolherFotoIntent.setType("image/*");
-
-            Intent capturarFotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-            File fotoFile = null;
-            try {
-                fotoFile = criarArquivoImagem();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (fotoFile != null) {
-                Uri fotoUri = FileProvider.getUriForFile(this, "com.example.android.fileprovider", fotoFile);
-                capturarFotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fotoUri);
-            }
-
-            Intent chooserIntent = Intent.createChooser(escolherFotoIntent, "Escolha uma foto");
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{capturarFotoIntent});
-
-            startActivityForResult(chooserIntent, REQUEST_IMAGE_PICK);
+            dispatchTakePictureIntent();
         }
     }
 
-    private File criarArquivoImagem() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String nomeArquivo = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File arquivoImagem = File.createTempFile(nomeArquivo, ".jpg", storageDir);
-        caminhoFotoAtual = arquivoImagem.getAbsolutePath();
-        return arquivoImagem;
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
-            if (data != null && data.getData() != null) {
-                Uri imagemSelecionadaUri = data.getData();
-                animal.setFoto(imagemSelecionadaUri.toString());
-            } else if (!TextUtils.isEmpty(caminhoFotoAtual)) {
-                animal.setFoto(caminhoFotoAtual);
-            }
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
 
-            Glide.with(EditarPetActivity.this).load(animal.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
+            showSaveOrDeleteDialog(imageBitmap);
         }
+    }
+
+    private void showSaveOrDeleteDialog(final Bitmap imageBitmap) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Salvar ou excluir?");
+        builder.setMessage("Deseja salvar a foto ou excluí-la?");
+
+        builder.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                savePhoto(imageBitmap);
+            }
+        });
+
+        builder.setNegativeButton("Excluir", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dispatchTakePictureIntent();
+            }
+        });
+
+        builder.show();
+    }
+
+    private void savePhoto(Bitmap imageBitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageData = baos.toByteArray();
+
+        animal.setFoto(Base64.encodeToString(imageData, Base64.DEFAULT));
+        imgPet.setImageBitmap(imageBitmap);
+
+        String imagePath = MediaStore.Images.Media.insertImage(
+                getContentResolver(),
+                imageBitmap,
+                "Foto_" + System.currentTimeMillis(),
+                ""
+        );
+
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.parse(imagePath);
+        mediaScanIntent.setData(contentUri);
+        sendBroadcast(mediaScanIntent);
     }
 
     @Override
@@ -346,7 +378,12 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
             intent.putExtra("userId", userId);
 
             startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.desconectar) {
+            Intent intent = new Intent(EditarPetActivity.this, LoginActivity.class);
+
+            startActivity(intent);
         }
+
         return false;
     }
 

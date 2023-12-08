@@ -1,7 +1,10 @@
 package com.example.exercicio1;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -74,8 +77,10 @@ public class ListaInteressadosActivity extends AppCompatActivity implements View
                     txtTipo.setText(animal.getTipo());
                     txtFaixaEtaria.setText(animal.getFaixaEtaria());
                     txtSexo.setText(animal.getSexo());
-                    Glide.with(ListaInteressadosActivity.this).load(pet.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
 
+                    byte[] decodedBytes = Base64.decode(animal.getFoto(), Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                    imgPet.setImageBitmap(bitmap);
                 } else {
                     Log.e("DetalharActivity", "Erro ao obter pet");
                     Toast.makeText(ListaInteressadosActivity.this, "Erro ao obter pet", Toast.LENGTH_SHORT).show();
@@ -95,7 +100,7 @@ public class ListaInteressadosActivity extends AppCompatActivity implements View
                     interessadosAdapter.notifyDataSetChanged();
 
                 } else {
-                    Toast.makeText(ListaInteressadosActivity.this, "Erro os usuarios interessados!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListaInteressadosActivity.this, "O pet não possui usuarios interessados!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -118,7 +123,10 @@ public class ListaInteressadosActivity extends AppCompatActivity implements View
     @Override
     public void onClick(View view) {
         if (view == imgVoltar) {
-            onBackPressed();
+            Intent intent = new Intent(ListaInteressadosActivity.this, PerfilActivity.class);
+            intent.putExtra("userId", userId);
+
+            startActivity(intent);
 
         } else if (view == imgMenu) {
             OpenMenu(view);
@@ -141,6 +149,11 @@ public class ListaInteressadosActivity extends AppCompatActivity implements View
         } else if (menuItem.getItemId() == R.id.cadastrarPet) {
             Intent intent = new Intent(ListaInteressadosActivity.this, CadastroPetActivity.class);
             intent.putExtra("userId", userId);
+
+            startActivity(intent);
+
+        } else if (menuItem.getItemId() == R.id.desconectar) {
+            Intent intent = new Intent(ListaInteressadosActivity.this, LoginActivity.class);
 
             startActivity(intent);
         }

@@ -1,8 +1,11 @@
 package com.example.exercicio1;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -83,7 +86,10 @@ public class DetalharActivity extends AppCompatActivity implements View.OnClickL
                     txtSexo.setText(animal.getSexo());
                     txtCastrado.setText(animal.getCatracao());
 
-                    Glide.with(DetalharActivity.this).load(animal.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
+                    byte[] decodedBytes = Base64.decode(animal.getFoto(), Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+                    imgPet.setImageBitmap(bitmap);
 
                     if (animal.getVacinas().size() == 1) {
                         txtVacinas.setText(animal.getVacinas().get(0));
@@ -131,7 +137,12 @@ public class DetalharActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view == imgVoltar) {
-            onBackPressed();
+            Intent intent = new Intent(DetalharActivity.this, MainActivity.class);
+            if (userId != null) {
+                intent.putExtra("userId", userId);
+            }
+
+            startActivity(intent);
 
         } else if (view == imgMenu) {
             OpenMenu(view);
@@ -191,7 +202,12 @@ public class DetalharActivity extends AppCompatActivity implements View.OnClickL
             intent.putExtra("userId", userId);
 
             startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.desconectar) {
+            Intent intent = new Intent(DetalharActivity.this, LoginActivity.class);
+
+            startActivity(intent);
         }
+
         return false;
     }
 }

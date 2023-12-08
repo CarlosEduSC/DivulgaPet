@@ -1,8 +1,11 @@
 package com.example.exercicio1;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -83,7 +86,9 @@ public class PerfilDoadorActivity extends AppCompatActivity implements View.OnCl
                     txtFaixaEtaria.setText(animal.getFaixaEtaria());
                     txtSexo.setText(animal.getSexo());
 
-                    Glide.with(PerfilDoadorActivity.this).load(animal.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
+                    byte[] decodedBytes = Base64.decode(animal.getFoto(), Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                    imgPet.setImageBitmap(bitmap);
 
                     usuarioDAO.getUsuarioById(animal.getIdUsuario().toString(), PerfilDoadorActivity.this, new UsuarioDAO.GetUsuarioCallback() {
                         @Override
@@ -121,7 +126,11 @@ public class PerfilDoadorActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if (view == imgVoltar) {
-            onBackPressed();
+            Intent intent = new Intent(PerfilDoadorActivity.this, DetalharActivity.class);
+            intent.putExtra("userId", userId);
+            intent.putExtra("petId", petId);
+
+            startActivity(intent);
 
         } else if (view == imgMenu) {
             OpenMenu(view);
@@ -155,6 +164,10 @@ public class PerfilDoadorActivity extends AppCompatActivity implements View.OnCl
         } else if (menuItem.getItemId() == R.id.listaAnimais) {
             Intent intent = new Intent(PerfilDoadorActivity.this, MainActivity.class);
             intent.putExtra("userId", userId);
+
+            startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.desconectar) {
+            Intent intent = new Intent(PerfilDoadorActivity.this, LoginActivity.class);
 
             startActivity(intent);
         }

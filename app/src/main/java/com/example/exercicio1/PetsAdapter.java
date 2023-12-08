@@ -1,6 +1,9 @@
 package com.example.exercicio1;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +62,10 @@ public class PetsAdapter extends BaseAdapter {
         faixaEtaria.setText(currentPet.getFaixaEtaria());
         sexo.setText(currentPet.getSexo());
 
-        Glide.with(context).load(currentPet.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(img);
+        byte[] decodedBytes = Base64.decode(currentPet.getFoto(), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+        img.setImageBitmap(bitmap);
 
         return v;
 

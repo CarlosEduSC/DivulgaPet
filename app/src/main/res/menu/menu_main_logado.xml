@@ -11,4 +11,9 @@
         android:id="@+id/cadastrarPet"
         android:title="@string/cadastrarPet"
         app:showAsAction="always|withText"/>
+
+    <item
+        android:id="@+id/desconectar"
+        android:title="@string/desconectar"
+        app:showAsAction="always|withText"/>
 </menu>

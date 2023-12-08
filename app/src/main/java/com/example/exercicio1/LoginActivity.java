@@ -58,7 +58,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view == imgVoltar) {
-            onBackPressed();
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+            startActivity(intent);
 
         } else if (view == imgMenu) {
             OpenMenu(view);
@@ -107,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public boolean onMenuItemClick(MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.cadastrarPet) {
+        if (menuItem.getItemId() == R.id.cadastro) {
             Intent intent = new Intent(LoginActivity.this, CadastroUsuraioActivity.class);
 
             startActivity(intent);

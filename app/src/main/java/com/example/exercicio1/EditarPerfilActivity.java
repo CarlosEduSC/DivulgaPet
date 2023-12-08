@@ -125,7 +125,10 @@ public class EditarPerfilActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         if (view == imgVoltar) {
-            onBackPressed();
+            Intent intent = new Intent(EditarPerfilActivity.this, PerfilActivity.class);
+            intent.putExtra("userId", userId);
+
+            startActivity(intent);
 
         } else if (view == imgMenu) {
             OpenMenu(view);
@@ -198,6 +201,10 @@ public class EditarPerfilActivity extends AppCompatActivity implements View.OnCl
         } else if (menuItem.getItemId() == R.id.listaAnimais) {
             Intent intent = new Intent(EditarPerfilActivity.this, MainActivity.class);
             intent.putExtra("userId", userId);
+
+            startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.desconectar) {
+            Intent intent = new Intent(EditarPerfilActivity.this, LoginActivity.class);
 
             startActivity(intent);
         }

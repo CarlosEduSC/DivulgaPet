@@ -16,4 +16,9 @@
         android:id="@+id/listaAnimais"
         android:title="@string/listaAnimais"
         app:showAsAction="always|withText"/>
+
+    <item
+        android:id="@+id/desconectar"
+        android:title="@string/desconectar"
+        app:showAsAction="always|withText"/>
 </menu>

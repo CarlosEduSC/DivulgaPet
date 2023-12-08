@@ -150,7 +150,10 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         if (view == imgVoltar) {
-            onBackPressed();
+            Intent intent = new Intent(PerfilActivity.this, MainActivity.class);
+            intent.putExtra("userId", userId);
+
+            startActivity(intent);
 
         } else if (view == imgMenu) {
             OpenMenu(view);
@@ -175,6 +178,10 @@ public class PerfilActivity extends AppCompatActivity implements View.OnClickLis
         } else if (menuItem.getItemId() == R.id.listaAnimais) {
             Intent intent = new Intent(PerfilActivity.this, MainActivity.class);
             intent.putExtra("userId", userId);
+
+            startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.desconectar) {
+            Intent intent = new Intent(PerfilActivity.this, LoginActivity.class);
 
             startActivity(intent);
         }

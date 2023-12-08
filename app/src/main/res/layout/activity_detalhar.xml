@@ -63,7 +63,8 @@
         <ImageView
             android:id="@+id/imgPet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:padding="10dp"/>
 
     </LinearLayout>
 

@@ -2,6 +2,9 @@ package com.example.exercicio1;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-public class PerfilAdapter extends BaseAdapter implements View.OnClickListener {
+public class PerfilAdapter extends BaseAdapter {
     private final Context context;
     private List<Pet> pets;
     private Button interessados;
@@ -59,42 +62,39 @@ public class PerfilAdapter extends BaseAdapter implements View.OnClickListener {
         interessados = (Button) v.findViewById(R.id.btInteressados);
         editarPet = (Button) v.findViewById(R.id.btEditarPet);
 
-
         Pet currentPet = pets.get(i);
-        p = currentPet;
+
         nome.setText(currentPet.getNome());
         tipo.setText(currentPet.getTipo());
         raca.setText(currentPet.getRaca());
         faixaEtaria.setText(currentPet.getFaixaEtaria());
         sexo.setText(currentPet.getSexo());
-        userId = p.getIdUsuario();
+        userId = currentPet.getIdUsuario();
 
-        Glide.with(context).load(p.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(img);
+        byte[] decodedBytes = Base64.decode(currentPet.getFoto(), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        img.setImageBitmap(bitmap);
 
-        interessados.setOnClickListener(this);
-        editarPet.setOnClickListener(this);
-
-        return v;
-
-    }
-
-    @Override
-    public void onClick(View view) {
-            if (view == interessados) {
+        interessados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Intent intent = new Intent(context, ListaInteressadosActivity.class);
                 intent.putExtra("userId", userId);
-                intent.putExtra("petId", p.getId());
-
-
-                context.startActivity(intent);
-
-            } else if (view == editarPet) {
-                Intent intent = new Intent(context, EditarPetActivity.class);
-                intent.putExtra("userId", userId);
-                intent.putExtra("petId", p.getId());
-
-
+                intent.putExtra("petId", currentPet.getId());
                 context.startActivity(intent);
             }
+        });
+
+        editarPet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EditarPetActivity.class);
+                intent.putExtra("userId", userId);
+                intent.putExtra("petId", currentPet.getId());
+                context.startActivity(intent);
+            }
+        });
+
+        return v;
     }
 }

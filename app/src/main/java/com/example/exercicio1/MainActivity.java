@@ -36,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private String[] opcoes_raca_gato;
     private String[] opcoes_faixa_etaria;
     private String[] opcoes_sexo;
+    private String tipoSelecionado;
+    private String racaSelecionado;
+    private String faixaEtariaSelecionado;
+    private String sexoSelecionado;
     private PetDAO petDAO;
     private PetsAdapter petsAdapter;
     private List<Pet> petsLista = new ArrayList<Pet>();
@@ -182,6 +186,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             intent.putExtra("userId", userId);
 
             startActivity(intent);
+        } else if (menuItem.getItemId() == R.id.desconectar) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+
+            startActivity(intent);
         }
 
         return false;
@@ -190,10 +198,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         int id = adapterView.getId();
-        String tipo = "";
-        String raca = "";
-        String faixaEtaria = "";
-        String sexo = "";
 
         if (id == R.id.spTipo) {
             if (spTipo.getSelectedItem() != opcoes_tipo[0]) {
@@ -207,8 +211,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spRaca.setAdapter(adapterRaca);
                 }
-                tipo = spTipo.getSelectedItem().toString();
-                atualizarLista(tipo, raca, faixaEtaria, sexo);
+                tipoSelecionado = spTipo.getSelectedItem().toString();
+                atualizarLista();
 
             } else {
                 ArrayList<String> raca0 = new ArrayList<String>();
@@ -218,42 +222,47 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 ArrayAdapter<String> adapterRaca = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, raca0);
                 adapterRaca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spRaca.setAdapter(adapterRaca);
-                atualizarLista(tipo, raca, faixaEtaria, sexo);
+                tipoSelecionado = "";
+                atualizarLista();
             }
 
         } else if (id == R.id.spRaca) {
             if (spTipo.getSelectedItem() == opcoes_tipo[1]) {
                 if (spRaca.getSelectedItem() != opcoes_raca_cachorro[0]) {
-                    raca = spRaca.getSelectedItem().toString();
-                    atualizarLista(tipo, raca, faixaEtaria, sexo);
+                    racaSelecionado = spRaca.getSelectedItem().toString();
+                    atualizarLista();
                 } else {
-                    atualizarLista(tipo, raca, faixaEtaria, sexo);
+                    racaSelecionado = "";
+                    atualizarLista();
                 }
 
             } else if (spTipo.getSelectedItem() == opcoes_tipo[2]) {
                 if (spRaca.getSelectedItem() != opcoes_raca_gato[0]) {
-                    raca = spRaca.getSelectedItem().toString();
-                    atualizarLista(tipo, raca, faixaEtaria, sexo);
+                    racaSelecionado = spRaca.getSelectedItem().toString();
+                    atualizarLista();
                 }  else {
-                    atualizarLista(tipo, raca, faixaEtaria, sexo);
+                    racaSelecionado = "";
+                    atualizarLista();
                 }
 
             }
 
         } else if (id == R.id.spFaixaEtaria) {
             if (spFaixaEtaria.getSelectedItem() != opcoes_faixa_etaria[0]) {
-                faixaEtaria = spFaixaEtaria.getSelectedItem().toString();
-                atualizarLista(tipo, raca, faixaEtaria, sexo);
+                faixaEtariaSelecionado = spFaixaEtaria.getSelectedItem().toString();
+                atualizarLista();
             } else {
-                atualizarLista(tipo, raca, faixaEtaria, sexo);
+                faixaEtariaSelecionado = "";
+                atualizarLista();
             }
 
         } else if (id == R.id.spSexo) {
             if (spSexo.getSelectedItem() != opcoes_sexo[0]) {
-                sexo = spSexo.getSelectedItem().toString();
-                atualizarLista(tipo, raca, faixaEtaria, sexo);
+                sexoSelecionado = spSexo.getSelectedItem().toString();
+                atualizarLista();
             } else {
-                atualizarLista(tipo, raca, faixaEtaria, sexo);
+                sexoSelecionado = "";
+                atualizarLista();
             }
         }
     }
@@ -262,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> adapterView) {
     }
 
-    public void atualizarLista(String tipo, String raca, String faixaEtaria, String sexo) {
+    public void atualizarLista() {
         petDAO.getAllPets(this, new PetDAO.PetCallback() {
             @Override
             public void onCallback(List<Pet> pets) {
@@ -270,10 +279,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     List<Pet> novaLista = new ArrayList<>();
 
                     for (Pet pet : pets) {
-                        boolean tipoCorresponde = tipo == null || tipo.isEmpty() || tipo.equals(pet.getTipo());
-                        boolean racaCorresponde = raca == null || raca.isEmpty() || raca.equals(pet.getRaca());
-                        boolean faixaEtariaCorresponde = faixaEtaria == null || faixaEtaria.isEmpty() || faixaEtaria.equals(pet.getFaixaEtaria());
-                        boolean sexoCorresponde = sexo == null || sexo.isEmpty() || sexo.equals(pet.getSexo());
+                        boolean tipoCorresponde = tipoSelecionado == null || tipoSelecionado.isEmpty() || tipoSelecionado.equals(pet.getTipo());
+                        boolean racaCorresponde = racaSelecionado == null || racaSelecionado.isEmpty() || racaSelecionado.equals(pet.getRaca());
+                        boolean faixaEtariaCorresponde = faixaEtariaSelecionado == null || faixaEtariaSelecionado.isEmpty() || faixaEtariaSelecionado.equals(pet.getFaixaEtaria());
+                        boolean sexoCorresponde = sexoSelecionado == null || sexoSelecionado.isEmpty() || sexoSelecionado.equals(pet.getSexo());
 
                         if (tipoCorresponde && racaCorresponde && faixaEtariaCorresponde && sexoCorresponde && !pet.getIdUsuario().equals(userId)) {
                             novaLista.add(pet);

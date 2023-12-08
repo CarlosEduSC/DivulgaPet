@@ -87,7 +87,9 @@ public class CadastroUsuraioActivity extends AppCompatActivity implements View.O
     @Override
     public void onClick(View view) {
         if (view == imgVoltar) {
-            onBackPressed();
+            Intent intent = new Intent(CadastroUsuraioActivity.this, MainActivity.class);
+
+            startActivity(intent);
 
         } else if (view == imgMenu) {
             OpenMenu(view);

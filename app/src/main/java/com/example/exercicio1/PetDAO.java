@@ -124,7 +124,8 @@ public class PetDAO {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<Pet> pets = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"), documentSnapshot.getString("foto"));
+                    String foto = documentSnapshot.getString("foto");
+                    Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"), foto);
 
                     pet.setId(documentSnapshot.getId());
                     pet.setPorte(documentSnapshot.getString("porte"));
@@ -162,7 +163,8 @@ public class PetDAO {
         db.collection("pet").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"), documentSnapshot.getString("foto"));
+                String foto = documentSnapshot.getString("foto");
+                Pet pet = new Pet(documentSnapshot.getString("nome"), documentSnapshot.getString("tipo"), documentSnapshot.getString("faixaEtaria"), documentSnapshot.getString("raca"), documentSnapshot.getString("sexo"), documentSnapshot.getString("idUsuario"), foto);
 
                 pet.setId(documentSnapshot.getId());
                 pet.setPorte(documentSnapshot.getString("porte"));
