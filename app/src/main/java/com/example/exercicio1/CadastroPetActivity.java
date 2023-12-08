@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -266,7 +267,9 @@ public class CadastroPetActivity extends AppCompatActivity implements View.OnCli
         byte[] imageData = baos.toByteArray();
 
         pet.setFoto(Base64.encodeToString(imageData, Base64.DEFAULT));
-        imgPet.setImageBitmap(imageBitmap);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
+        imgPet.setImageBitmap(bitmap);
 
         String imagePath = MediaStore.Images.Media.insertImage(
                 getContentResolver(),

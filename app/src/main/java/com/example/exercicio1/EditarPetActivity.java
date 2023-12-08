@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -121,6 +122,14 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
                 animal.setId(pet.getId());
                 animal.setIdUsuario(pet.getIdUsuario());
                 edtNome.setText(pet.getNome());
+                animal.setFoto(pet.getFoto());
+
+                byte[] decodedBytes = Base64.decode(animal.getFoto(), Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+                imgPet.setImageBitmap(bitmap);
+
+
                 if (pet.getTipo().equals("Cachorro")) {
                     rbCachorro.setChecked(true);
 
@@ -172,10 +181,6 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
                 }
 
                 edtDescricao.setText(pet.getDescricao());
-
-                if (pet.getFoto() != null) {
-                    Glide.with(EditarPetActivity.this).load(pet.getFoto()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(imgPet);
-                }
             }
         });
 
@@ -346,7 +351,9 @@ public class EditarPetActivity extends AppCompatActivity implements View.OnClick
         byte[] imageData = baos.toByteArray();
 
         animal.setFoto(Base64.encodeToString(imageData, Base64.DEFAULT));
-        imgPet.setImageBitmap(imageBitmap);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+
+        imgPet.setImageBitmap(bitmap);
 
         String imagePath = MediaStore.Images.Media.insertImage(
                 getContentResolver(),

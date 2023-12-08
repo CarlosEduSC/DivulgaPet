@@ -80,11 +80,11 @@
 
     <array name="faixa_etaria">
         <item>Faixa Etária</item>
-        <item>0 há 5 meses</item>
-        <item>6 há 11 meses</item>
-        <item>1 há 2 anos</item>
-        <item>3 há 5 anos</item>
-        <item>6 há 10 anos</item>
+        <item>0 a 5 meses</item>
+        <item>6 a 11 meses</item>
+        <item>1 a 2 anos</item>
+        <item>3 a 5 anos</item>
+        <item>6 a 10 anos</item>
         <item>mais de 10 anos</item>
     </array>
 
